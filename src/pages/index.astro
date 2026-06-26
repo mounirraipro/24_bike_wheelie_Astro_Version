@@ -1,0 +1,276 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { articles } from "@/data/articles";
+import { externalGames, mainGame } from "@/data/externalGames";
+import { siteConfig } from "@/data/siteConfig";
+
+const recentPosts = articles.slice(0, 3);
+const homeBentoGames = [
+  {
+    href: "/play/",
+    title: mainGame.title,
+    shortTitle: mainGame.shortTitle,
+    category: "Now playing",
+    thumbnail: mainGame.thumbnail,
+    accentClass: mainGame.accentClass,
+  },
+  ...externalGames.map((game) => ({
+    href: `/games/${game.slug}/`,
+    title: game.title,
+    shortTitle: game.shortTitle,
+    category: game.category,
+    thumbnail: game.thumbnail,
+    accentClass: game.accentClass,
+  })),
+].slice(0, 8);
+const homeBentoLeft = homeBentoGames.slice(0, 4);
+const homeBentoRight = homeBentoGames.slice(4, 8);
+
+const faqItems = [
+  ["What is Bike Wheelie?", "Bike Wheelie is a free browser bike balance game site. The main playable iframe uses Playgama's Wheelie Bike export."],
+  ["How do you play?", "Raise the front wheel, hold a stable angle, and release early before the rider flips backward. Small corrections create longer runs."],
+  ["Is the game from Playgama?", `Yes. The main iframe uses ${mainGame.iframeUrl}, and every related game card links to a real Playgama game route.`],
+  ["Can I play on mobile?", "The website is responsive and the embedded Playgama game supports browser play. Mobile control behavior depends on the iframe game."],
+  ["Do I need an account?", "No. Open the play page and start the game in a modern browser without signing in."],
+];
+
+const homeStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    name: siteConfig.name,
+    alternateName: ["Wheelie Bike", "Bike Wheelie Online"],
+    url: `${siteConfig.siteUrl}/`,
+    image: new URL(siteConfig.defaultOgImage, siteConfig.siteUrl).href,
+    description: siteConfig.description,
+    applicationCategory: "Game",
+    gamePlatform: ["Web browser", "Desktop", "Mobile", "Tablet"],
+    genre: ["Bike", "Racing", "Skill", "Physics"],
+    operatingSystem: "Any modern browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.publisherName,
+      url: siteConfig.siteUrl,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout title={siteConfig.name} description={siteConfig.description} structuredData={homeStructuredData}>
+  <section class="hero-play">
+    <div class="home-game-lobby">
+      <div class="game-bento-grid game-bento-grid-side" aria-label="Bike games you can play">
+        {homeBentoLeft.map((game, index) => (
+          <a class:list={["game-bento-card", game.accentClass, { "game-bento-card-featured": index === 0 }]} href={game.href}>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <strong>{game.shortTitle}</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-game">
+        <iframe src="/game/index.html" title="Play Bike Wheelie" loading="eager" allow="autoplay; fullscreen *" allowfullscreen></iframe>
+      </div>
+      <div class="game-bento-grid game-bento-grid-side" aria-label="More Playgama bike games">
+        {homeBentoRight.map((game, index) => (
+          <a class:list={["game-bento-card", game.accentClass, { "game-bento-card-featured": index === 0 }]} href={game.href}>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <strong>{game.shortTitle}</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="hero-copy">
+      <div class="hero-copy-main">
+        <p class="eyebrow">Instant bike balance</p>
+        <h1>Bike Wheelie Online</h1>
+        <p>Play Bike Wheelie free in your browser. Keep the front wheel raised, control the rider angle, and chase a longer run with no download.</p>
+        <a class="text-link hero-note" href="/how-to-play/">Learn the controls</a>
+      </div>
+      <div class="hero-play-panel">
+        <div class="hero-panel-top">
+          <span>Playgama iframe</span>
+          <strong>Wheelie Bike loaded here.</strong>
+        </div>
+        <div class="hero-actions">
+          <a class="primary-action" href="/play/"><span class="play-triangle"></span>Play Full Screen</a>
+          <a class="secondary-action" href="/games/">More Bike Games</a>
+        </div>
+        <dl class="stat-row">
+          <div><dt>{externalGames.length}</dt><dd>Related games</dd></div>
+          <div><dt>1</dt><dd>Main iframe</dd></div>
+          <div><dt>{articles.length}</dt><dd>Guides</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-search-intent">
+    <div class="home-section-head split-head">
+      <div>
+        <p class="eyebrow">Wheelie guide</p>
+        <h2>Hold the angle without flipping.</h2>
+      </div>
+      <p>Bike Wheelie is about rhythm: lift, recover, and correct early before the rider loses balance.</p>
+    </div>
+    <div class="process-strip">
+      <article>
+        <span>Lift</span>
+        <h3>Start controlled</h3>
+        <p>Use a short press to raise the front wheel. A modest first angle is easier to save than an aggressive launch.</p>
+      </article>
+      <article>
+        <span>Hold</span>
+        <h3>Watch the rider</h3>
+        <p>Read the bike angle and rider lean. When the front wheel drops, add a small correction; when the rider leans back, release.</p>
+      </article>
+      <article>
+        <span>Save</span>
+        <h3>Recover early</h3>
+        <p>Most failed runs are late reactions. Make small inputs before the bike reaches a dangerous angle.</p>
+      </article>
+      <article>
+        <span>Try</span>
+        <h3>Play related games</h3>
+        <p>Open the <a href="/games/">Playgama game library</a> for motorbike stunts, motocross, bike ramps, and physics riding.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-section home-worlds">
+    <div class="home-section-head">
+      <p class="eyebrow">Related Playgama games</p>
+      <h3>Bike, stunt, and physics picks.</h3>
+      <p>Every card links to a real Playgama game route with a playable iframe page.</p>
+    </div>
+    <div class="world-showcase">
+      <a class:list={["world-feature", externalGames[0].accentClass]} href={`/games/${externalGames[0].slug}/`}>
+        <img src={externalGames[0].thumbnail} alt={`${externalGames[0].title} thumbnail`} width="640" height="360" loading="lazy" />
+        <div>
+          <span>{externalGames[0].category}</span>
+          <strong>{externalGames[0].title}</strong>
+          <small>{externalGames[0].description}</small>
+        </div>
+      </a>
+      <div class="world-stack">
+        {externalGames.slice(1, 7).map((game) => (
+          <a class:list={["world-card", game.accentClass]} href={`/games/${game.slug}/`}>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <small>{game.shortTitle}</small>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-process">
+    <div class="home-section-head split-head">
+      <div>
+        <p class="eyebrow">How it works</p>
+        <h3>Simple input. Real timing.</h3>
+      </div>
+      <p>Four habits make wheelie runs cleaner.</p>
+    </div>
+    <div class="process-strip">
+      <article><span>01</span><h3>Tap</h3><p>Start with a short lift instead of holding too long.</p></article>
+      <article><span>02</span><h3>Balance</h3><p>Keep the front wheel high but recoverable.</p></article>
+      <article><span>03</span><h3>Release</h3><p>Ease off before the rider rotates too far back.</p></article>
+      <article><span>04</span><h3>Repeat</h3><p>Restart quickly and improve one part of the run.</p></article>
+    </div>
+  </section>
+
+  <section class="home-section home-blog">
+    <div class="blog-editorial">
+      <div class="home-section-head">
+        <p class="eyebrow">From the blog</p>
+        <h3>Better bike-game control.</h3>
+        <p>Short reads for smoother starts, related games, and browser play.</p>
+        <a class="text-link" href="/blog/">Browse all articles</a>
+      </div>
+      <div class="blog-board">
+        <a class="editorial-card editorial-card-featured" href={`/blog/${recentPosts[0].slug}/`}>
+          <span>{recentPosts[0].category}</span>
+          <h3>{recentPosts[0].title}</h3>
+          <p>{recentPosts[0].description}</p>
+          <small>{recentPosts[0].readTime}</small>
+        </a>
+        <div class="article-rail">
+          {recentPosts.slice(1).map((post) => (
+            <a class="editorial-card editorial-card-row" href={`/blog/${post.slug}/`}>
+              <span>{post.category}</span>
+              <h3>{post.title}</h3>
+              <small>{post.readTime}</small>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-faq">
+    <div class="faq-layout">
+      <div class="faq-cardlet">
+        <p class="eyebrow">FAQ</p>
+        <h3>Quick answers.</h3>
+        <p>Need the short version before playing?</p>
+      </div>
+      <div class="faq-list" data-faq-list>
+        {faqItems.map(([question, answer]) => (
+          <details>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-cta">
+    <div>
+      <p class="eyebrow">Ready?</p>
+      <h3>Open the bike and start balancing.</h3>
+    </div>
+    <a class="primary-action" href="/play/"><span class="play-triangle"></span>Play Bike Wheelie</a>
+  </section>
+
+  <script is:inline>
+    (() => {
+      document.querySelectorAll("[data-faq-list]").forEach((list) => {
+        list.querySelectorAll("details").forEach((item) => {
+          item.addEventListener("toggle", () => {
+            if (!item.open) return;
+            list.querySelectorAll("details[open]").forEach((other) => {
+              if (other !== item) other.open = false;
+            });
+          });
+        });
+      });
+    })();
+  </script>
+</BaseLayout>

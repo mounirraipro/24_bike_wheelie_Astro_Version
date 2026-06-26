@@ -1,0 +1,115 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { externalGames, mainGame } from "@/data/externalGames";
+
+const featuredGames = [
+  {
+    href: "/play/",
+    title: mainGame.title,
+    shortTitle: mainGame.shortTitle,
+    category: "Main game",
+    description: mainGame.description,
+    thumbnail: mainGame.thumbnail,
+    accentClass: mainGame.accentClass,
+  },
+  ...externalGames.slice(0, 3).map((game) => ({
+    href: `/games/${game.slug}/`,
+    title: game.title,
+    shortTitle: game.shortTitle,
+    category: game.category,
+    description: game.description,
+    thumbnail: game.thumbnail,
+    accentClass: game.accentClass,
+  })),
+];
+
+const directoryGames = [
+  {
+    href: "/play/",
+    title: mainGame.title,
+    shortTitle: mainGame.shortTitle,
+    category: mainGame.category,
+    description: mainGame.description,
+    thumbnail: mainGame.thumbnail,
+    accentClass: mainGame.accentClass,
+  },
+  ...externalGames.map((game) => ({
+    href: `/games/${game.slug}/`,
+    title: game.title,
+    shortTitle: game.shortTitle,
+    category: game.category,
+    description: game.description,
+    thumbnail: game.thumbnail,
+    accentClass: game.accentClass,
+  })),
+];
+---
+
+<BaseLayout title="Free Online Bike Games" description="Play Bike Wheelie and related Playgama bike games, motorbike stunt games, dirt-bike physics games, and racing games in your browser.">
+  <section class="games-directory">
+    <header class="games-directory-hero">
+      <div>
+        <h1>Free online bike games.</h1>
+        <p>Play Bike Wheelie and a focused Playgama library of wheelie, motorbike, motocross, ramp, and physics-riding games. No downloads, no account setup, just browser play.</p>
+      </div>
+      <a class="games-directory-action" href="/play/"><span></span>Play Bike Wheelie</a>
+    </header>
+
+    <div class="games-feature-rail" aria-label="Featured Playgama bike games">
+      {featuredGames.map((game, index) => (
+        <a class:list={["games-feature-link", game.accentClass]} href={game.href}>
+          <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+          <div>
+            <span>{game.category}</span>
+            <strong>{game.shortTitle}</strong>
+          </div>
+          <small>{index === 0 ? "Start here" : "Related pick"}</small>
+        </a>
+      ))}
+    </div>
+
+    <section class="games-directory-main" aria-labelledby="games-directory-title">
+      <div class="games-directory-intro">
+        <h2 id="games-directory-title">Choose a bike game</h2>
+        <p>{directoryGames.length} Playgama-powered bike and riding games selected for balance, stunt, racing, and physics control.</p>
+      </div>
+
+      <div class="games-directory-list">
+        {directoryGames.map((game, index) => (
+          <a class:list={["games-directory-row", game.accentClass]} href={game.href}>
+            <span class="games-directory-number">{String(index + 1).padStart(2, "0")}</span>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="320" height="180" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <h3>{game.title}</h3>
+              <p>{game.description}</p>
+            </div>
+            <span class="games-directory-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="games-guide-strip" aria-labelledby="games-library-guide">
+      <h3 id="games-library-guide">Bike game library guide</h3>
+      <div>
+        <article>
+          <h3>Real Playgama game pages</h3>
+          <p>Every related item in this library uses a Playgama game title, thumbnail, and export URL. The main Bike Wheelie experience uses Wheelie Bike, while each detail page can load its own Playgama iframe after the player chooses to start it.</p>
+        </article>
+        <article>
+          <h3>How to choose a game</h3>
+          <p>Choose Wheelie Bike for pure balance, Wheelie Bike For 2 Players for a competitive twist, Moto X3M for stunt tracks, Canyon Drifter for physics riding, and Off-road Motocross for rough-terrain control.</p>
+        </article>
+        <article>
+          <h3>Why no-download play matters</h3>
+          <p>Browser bike games are useful because they remove setup friction. You can open a page, play quickly, and switch to a related game without installing software or creating an account.</p>
+        </article>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

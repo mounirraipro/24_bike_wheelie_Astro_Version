@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bike Wheelie icon">
+  <rect width="64" height="64" rx="14" fill="#101018"/>
+  <circle cx="19" cy="45" r="8" fill="none" stroke="#ff6a2a" stroke-width="5"/>
+  <circle cx="46" cy="45" r="8" fill="none" stroke="#20b8d8" stroke-width="5"/>
+  <path d="M19 45 31 28l15 17M31 28l6-8M29 28h12" fill="none" stroke="#fff7ed" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 18c5 1 8 4 10 8" fill="none" stroke="#ffcf5a" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,148 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { externalGames, mainGame } from "@/data/externalGames";
+import { siteConfig } from "@/data/siteConfig";
+
+const playSteps = [
+  ["1", "Lift", "Press or tap to raise the front wheel."],
+  ["2", "Balance", "Hold a recoverable angle with small corrections."],
+  ["3", "Release", "Ease off before the rider flips backward."],
+];
+
+const tips = [
+  "Use short corrections instead of holding nonstop.",
+  "Watch the rider angle more than the score.",
+  "Restart quickly and improve one part of the run.",
+];
+
+const relatedCards = externalGames.map((game) => ({
+  href: `/games/${game.slug}/`,
+  title: game.title,
+  shortTitle: game.shortTitle,
+  category: game.category,
+  thumbnail: game.thumbnail,
+  accentClass: game.accentClass,
+}));
+const sideLeft = relatedCards.slice(0, 4);
+const sideRight = relatedCards.slice(4, 8);
+---
+
+<BaseLayout
+  title={`Play ${siteConfig.name} Online`}
+  description={`Play ${siteConfig.name} online free in your browser with the Playgama Wheelie Bike iframe, related bike games, and no download.`}
+>
+  <section class="play-stage" id="top">
+    <div class="play-stage-bg" aria-hidden="true"></div>
+    <div class="home-game-lobby">
+      <div class="game-bento-grid game-bento-grid-side" aria-label="Related Playgama bike games">
+        {sideLeft.map((game, index) => (
+          <a class:list={["game-bento-card", game.accentClass, { "game-bento-card-featured": index === 0 }]} href={game.href}>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <strong>{game.shortTitle}</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="play-shell" data-game-shell>
+        <iframe src="/game/index.html" title="Bike Wheelie game" allow="autoplay; fullscreen *" allowfullscreen></iframe>
+        <div class="play-float-controls">
+          <button type="button" data-share-game aria-label="Share game">
+            <span>Share</span>
+          </button>
+          <button type="button" data-fullscreen-game aria-label="Fullscreen game">
+            <span>Fullscreen</span>
+          </button>
+        </div>
+      </div>
+      <div class="game-bento-grid game-bento-grid-side" aria-label="More related Playgama bike games">
+        {sideRight.map((game, index) => (
+          <a class:list={["game-bento-card", game.accentClass, { "game-bento-card-featured": index === 0 }]} href={game.href}>
+            <img src={game.thumbnail} alt={`${game.title} thumbnail`} width="640" height="360" loading="lazy" />
+            <div>
+              <span>{game.category}</span>
+              <strong>{game.shortTitle}</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="play-info-section">
+    <div class="play-info-head">
+      <p class="eyebrow">Play online</p>
+      <h1>Bike Wheelie in your browser.</h1>
+      <p>{mainGame.description}</p>
+    </div>
+    <div class="play-step-grid">
+      {playSteps.map(([number, title, text]) => (
+        <article>
+          <span>{number}</span>
+          <strong>{title}</strong>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="play-info-section play-split-section">
+    <div>
+      <p class="eyebrow">Related games</p>
+      <p class="play-panel-title">Keep the bike theme going.</p>
+      <div class="play-category-pills">
+        {externalGames.slice(0, 6).map((game) => <a class={game.accentClass} href={`/games/${game.slug}/`}>{game.shortTitle}</a>)}
+      </div>
+    </div>
+    <div class="play-tip-panel">
+      <p class="eyebrow">Tips</p>
+      <ul>
+        {tips.map((tip) => <li>{tip}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="play-info-section seo-copy-section" aria-labelledby="play-page-guide">
+    <div class="section-head">
+      <h2 id="play-page-guide">Play guide.</h2>
+    </div>
+    <div class="seo-copy-grid">
+      <article class="seo-copy-card seo-copy-wide">
+        <h3>What makes Bike Wheelie different</h3>
+        <p>Bike Wheelie is built around one clear skill: keep the front wheel in the air without tipping the rider backward. The main Playgama game loads through a dedicated static iframe page, so the surrounding site can stay fast, searchable, and focused on the wheelie experience.</p>
+      </article>
+      <article class="seo-copy-card">
+        <h3>How to start a strong run</h3>
+        <p>Start with a modest lift. If the angle is already extreme in the first second, every later correction becomes harder. Smooth starts give you more room to recover and build distance.</p>
+      </article>
+      <article class="seo-copy-card">
+        <h3>Best sessions</h3>
+        <p>Use Bike Wheelie for quick attempts and related Playgama games when you want ramps, traffic, motocross terrain, or two-player balance challenges. Every recommended card keeps the bike or stunt theme.</p>
+      </article>
+    </div>
+  </section>
+  <script is:inline>
+    (() => {
+      const shell = document.querySelector("[data-game-shell]");
+      const iframe = shell?.querySelector("iframe");
+      const fullscreen = document.querySelector("[data-fullscreen-game]");
+      const share = document.querySelector("[data-share-game]");
+      fullscreen?.addEventListener("click", async () => {
+        const active = document.fullscreenElement;
+        if (active) {
+          await document.exitFullscreen?.();
+          return;
+        }
+        await (iframe?.requestFullscreen?.() ?? shell?.requestFullscreen?.());
+      });
+      share?.addEventListener("click", async () => {
+        const data = { title: "Bike Wheelie", text: "Play Bike Wheelie online.", url: location.href };
+        try {
+          if (navigator.share) await navigator.share(data);
+          else await navigator.clipboard?.writeText(location.href);
+        } catch {}
+      });
+    })();
+  </script>
+</BaseLayout>

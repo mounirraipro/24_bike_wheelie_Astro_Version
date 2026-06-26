@@ -1,0 +1,9 @@
+---
+import BlogArticle from "@/components/BlogArticle.astro";
+import { articles } from "@/data/articles";
+
+const article = articles.find((item) => item.slug === "how-to-hold-a-longer-wheelie");
+if (!article) throw new Error("Missing article: how-to-hold-a-longer-wheelie");
+---
+
+<BlogArticle article={article} />
