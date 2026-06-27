@@ -15,6 +15,7 @@ https://playgama.com/export/game/wheelie-bike?clid=p_eb5ee739-3023-44bb-875d-81f
 - Reusable `/games/` directory and `/games/[slug]/` related game pages.
 - Real Playgama related game titles, thumbnails, categories, and export URLs.
 - Bike Wheelie fallback SVG favicon, apple-touch icon, and Open Graph image.
+- Google Tag Manager container `GTM-TBSMXQKQ`.
 
 ## Setup
 
@@ -27,6 +28,7 @@ Production URL:
 
 ```bash
 SITE_URL=https://bikewheelie.online
+PUBLIC_GTM_ID=GTM-TBSMXQKQ
 ```
 
-This project does not have a GTM ID yet. Leave `PUBLIC_GTM_ID` unset until one is provided.
+GTM is also configured in `src/data/siteConfig.ts` so production builds include the tag.

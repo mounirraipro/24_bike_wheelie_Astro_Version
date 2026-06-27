@@ -13,6 +13,7 @@ export const siteConfig = {
   defaultOgImage: "/og-bike-wheelie.svg",
   socialHandle: "",
   publisherName: "Bike Wheelie",
+  gtmId: "GTM-TBSMXQKQ",
   sameAs: [] as string[],
   emitMetaKeywords: true,
   topicKeywords: [

@@ -21,6 +21,7 @@ export type ContentPage = {
 const gameName = siteConfig.name;
 const contact = siteConfig.contactEmail;
 const updated = "June 26, 2026";
+const gtmText = "Google Tag Manager is configured for this project with container GTM-TBSMXQKQ. The tag may load analytics or advertising-related scripts according to the configured container settings.";
 
 export const pageContent = {
   about: {
@@ -134,6 +135,10 @@ export const pageContent = {
       {
         heading: "Embedded Game and Ads",
         body: "The main game is embedded from Playgama. Playgama and its partners may use cookies or similar technologies inside the iframe according to their own policies.",
+      },
+      {
+        heading: "Google Tag Manager",
+        body: gtmText,
       },
       {
         heading: "Managing Cookies",
@@ -340,6 +345,10 @@ export const pageContent = {
       {
         heading: "Automatically Collected Information",
         body: "Basic technical information may be processed by hosting, security, analytics, ad, or embedded-game providers. This can include browser type, device type, pages visited, and general diagnostics.",
+      },
+      {
+        heading: "Google Tag Manager",
+        body: gtmText,
       },
       {
         heading: "Embedded Playgama Game",
